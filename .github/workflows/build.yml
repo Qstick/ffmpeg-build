@@ -15,6 +15,9 @@ jobs:
       run: echo "##vso[build.updatebuildnumber]$ffmpegVersion"
       shell: bash
   ffmpeg_build:
+    strategy:
+      matrix:
+        folder: [win-x64, linux-x64, linux-arm64]
     runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v3
@@ -22,11 +25,11 @@ jobs:
         submodules: 'true'
         fetch-depth: '1'
     - name: Build
-      run: win-x64/build.sh
+      run: ${{ matrix.folder }}/build.sh
       shell: bash
     - name: Publish FFmpeg
       uses: actions/upload-artifact@v2
       with:
-        path: win-x64/output
-        name: ffmpeg-win-x64
+        path: ${{ matrix.folder }}/output
+        name: ffmpeg-${{ matrix.folder }}
                     
