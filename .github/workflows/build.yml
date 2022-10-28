@@ -5,15 +5,15 @@ on:
 env:
   majorVersion: 5.1.2
   minorVersion: $[counter('minorVersion', 1)]
-  ffmpegVersion: ${{ env.majorVersion }}.${{ env.minorVersion }}
+  ffmpegVersion: $majorVersion.$minorVersion
 jobs:
   setup:
     name: Build Variables
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
     - name: Set Build Name
-      run: echo "##vso[build.updatebuildnumber]$FFMPEGVERSION"
+      run: echo "##vso[build.updatebuildnumber]$ffmpegVersion"
       shell: bash
   ffmpeg_build:
     strategy:
