@@ -1,0 +1,37 @@
+on:
+  push:
+    branches:
+    - master
+  pull-request:
+    branches:
+    - master
+env:
+  majorVersion: 5.1.2
+  minorVersion: $[counter('minorVersion', 1)]
+  ffmpegVersion: ${{ env.majorVersion }}.${{ env.minorVersion }}
+jobs:
+  setup:
+    name: Build Variables
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set Build Name
+      run: echo "##vso[build.updatebuildnumber]$FFMPEGVERSION"
+      shell: bash
+  ffmpeg_build:
+    strategy:
+      matrix:
+        folder:
+        - win-x64
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build
+      run: win-x64/build.sh
+      shell: bash
+    - name: Publish FFmpeg
+      uses: actions/upload-artifact@v2
+      with:
+        path: win-x64/output
+        name: ffmpeg-win-x64
+                    
