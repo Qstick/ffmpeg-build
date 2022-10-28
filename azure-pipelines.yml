@@ -150,10 +150,3 @@ stages:
               projects: 'Servarr.FFprobe.csproj'
           - publish: $(Build.ArtifactStagingDirectory)
             artifact: nuget
-          - task: DotNetCoreCLI@2
-            inputs:
-              command: 'push'
-              packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg'
-              nuGetFeedType: 'internal'
-              publishVstsFeed: '7ab38f4e-5a57-4d70-84f4-94dd9bc5d6df/783c2dce-dbc3-4218-8816-4a5e12af4d84'
-            condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
